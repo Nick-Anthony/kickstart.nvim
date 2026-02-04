@@ -289,31 +289,15 @@ require('lazy').setup({
     },
   },
 
-  --   {
-  --   "folke/snacks.nvim",
-  --   priority = 1000,
-  --   lazy = false,
-  --   ---@type snacks.Config
-  --   opts = {
-  --     -- your configuration comes here
-  --     -- or leave it empty to use the default settings
-  --     -- refer to the configuration section below
-  --     bigfile = { enabled = true },
-  --     gh = {enabled = true},
-  --     terminal = {enabled = true},
-  --     dashboard = { enabled = true },
-  --     explorer = { enabled = true },
-  --     indent = { enabled = true },
-  --     input = { enabled = true },
-  --     picker = { enabled = true },
-  --     notifier = { enabled = true },
-  --     quickfile = { enabled = true },
-  --     scope = { enabled = true },
-  --     scroll = { enabled = true },
-  --     statuscolumn = { enabled = true },
-  --     words = { enabled = true },
-  --   },
-  -- },
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    event = 'VeryLazy',
+    config = true, -- auto-setup with defaults
+    opts = {
+      theme = 'palenight',
+    },
+  },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
@@ -723,8 +707,9 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+        clangd = {},
         gopls = {},
+        jsonls = {},
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -824,7 +809,13 @@ require('lazy').setup({
         -- python = { "isort", "black" },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        javascript = { 'prettierd', 'prettier', stop_after_first = true },
+        javascriptreact = { 'prettierd', 'prettier', stop_after_first = true },
+        typescript = { 'prettierd', 'prettier', stop_after_first = true },
+        typescriptreact = { 'prettierd', 'prettier', stop_after_first = true },
+        json = { 'prettierd', 'prettier', stop_after_first = true }, -- Add
+        jsonc = { 'prettierd', 'prettier', stop_after_first = true },
+        fish = { 'trim_whitespace', 'prettierd', 'prettier', stop_after_first = false },
       },
     },
   },
@@ -964,20 +955,22 @@ require('lazy').setup({
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup()
 
+      -- require 'mini.git'
+      -- require 'mini.diff'
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
       --  and try some other statusline plugin
-      local statusline = require 'mini.statusline'
+      -- local statusline = require 'mini.statusline'
       -- set use_icons to true if you have a Nerd Font
-      statusline.setup { use_icons = vim.g.have_nerd_font }
+      -- statusline.setup { use_icons = vim.g.have_nerd_font }
 
       -- You can configure sections in the statusline by overriding their
       -- default behavior. For example, here we set the section for
       -- cursor location to LINE:COLUMN
       ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_location = function()
-        return '%2l:%-2v'
-      end
+      -- statusline.section_location = function()
+      --   return '%2l:%-2v'
+      -- end
 
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
@@ -1034,7 +1027,7 @@ require('lazy').setup({
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
@@ -1061,6 +1054,8 @@ require('lazy').setup({
     },
   },
 })
+
+require 'configs.lualine'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
